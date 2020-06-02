@@ -1,5 +1,5 @@
 --- 
-Project for the course in microeconometrics | Summer 2019, M.Sc. Economics, Bonn University | [Hyein Jeong](https://github.com/huiren-j)
+Project for the course in microeconometrics | Summer 2020, M.Sc. Economics, Bonn University | [Hyein Jeong](https://github.com/huiren-j)
 # Replication of Franscesco Decarolis (2014)  <a class = "tocSkip">
 ---
    
