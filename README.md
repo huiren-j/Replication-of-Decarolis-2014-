@@ -22,4 +22,4 @@ Decarolis analyzed the effect of the switch of Italian public procurement method
 </a>
 
     
-[![Build Status](https://travis-ci.org/HumanCapitalAnalysis/microeconometrics-course-HyeinJeong.svg?branch=temp1)](https://travis-ci.org/HumanCapitalAnalysis/template-course-project)
+[![Build Status](https://travis-ci.org/HumanCapitalAnalysis/microeconometrics-course-project-HyeinJeong.svg?branch=temp1)](https://travis-ci.org/HumanCapitalAnalysis/microeconometrics-course-project-HyeinJeong)
