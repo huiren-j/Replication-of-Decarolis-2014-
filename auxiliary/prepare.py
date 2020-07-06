@@ -5,6 +5,7 @@ from linearmodels import PanelOLS
 import statsmodels.api as sm
 import econtools as econ
 import econtools.metrics as mt
+from statsmodels.stats.outliers_influence import variance_inflation_factor
 
 from auxiliary.prepare import *
 
@@ -30,65 +31,33 @@ def prepare_data(data):
     print(df_desc.shape)
     #(3004,31) checked
     
-    return df_desc
+    return(df_desc)
 
 def presort_describe(data):
     df_pre = data
     df_pre['presort'] = np.nan
     df_pre.loc[(df_pre['sample']==0)&(df_pre['pre_experience']>=5),'presort'] = 3
-    #idx = df[(df['presort'].isnull()==True)].index
-    #print(idx) 1811 obs = NaN checked
-
-    #realnm = df[df['presort']==3].index
-    #print(realnm); starting point, 1193 obs were presrot=3  
-
     df_pre.loc[(df_pre['authority_code']==3090272)&(df_pre['presort'].isnull()==False),'presort'] = 1
-    #realnm = df[df['presort']==1].index
-    #print(realnm) 
-    ##121 obs -> presort ==1 chekced
-
     df_pre.loc[(df_pre['authority_code']==3070001)& (df_pre['presort'].isnull() ==False),'presort'] = 2
-    #realnm = df[df['presort']==2].index
-    #print(realnm) 
-    #63 obs -> presort ==2 checked
-    #print(df.shape) = (3004,32)
 
     df_pre =df_pre.filter(items=['presort', 'fiscal_efficiency', 'reserve_price', 'experience', 'population', 'discount', 'n_bidders', 'overrun_ratio', 'delay_ratio', 'days_to_award'])
     idx = df_pre[df_pre['presort'].isnull() == True].index
     df_pre = df_pre.drop(idx)
-    #print(df.shape) #1181 obs dropped, 1193 left (1193,10) checked
-
-    df_pre['reserve_price']= df_pre['reserve_price']/1000 #rp = three digits or four
+    df_pre['reserve_price']= df_pre['reserve_price']/1000
     df_pre['population']=df_pre['population']/1000
-    #df.head()
-    print(df_pre.shape) 
-    #(1193,10) checked
-
+    
     #descriptive
     pre_describe = df_pre.groupby('presort')[['discount', 'overrun_ratio', 'delay_ratio', 'days_to_award', 'reserve_price',  'n_bidders', 'population', 'experience',
                                               'fiscal_efficiency']].describe()
     
-    return pre_describe
+    return(pre_describe)
 
 def postsort_describe(data):
-    df_post = df_desc
+    df_post = data
     df_post['postsort'] = np.nan
     df_post.loc[(df_post['sample']==1)&(df_post['post_experience']>=5),'postsort'] = 3
-    #idx = df[(df['presort'].isnull()==True)].index
-    #print(idx) 1811 obs = NaN checked
-
-    #realnm = df[df['presort']==3].index
-    #print(realnm); starting point, 1193 obs were presrot=3  
-
     df_post.loc[(df_post['authority_code']==3090272)&(df_post['postsort'].isnull()==False),'postsort'] = 1
-    #realnm = df[df['presort']==1].index
-    #print(realnm) 
-    ##121 obs -> presort ==1 chekced
-
     df_post.loc[(df_post['authority_code']==3070001)& (df_post['postsort'].isnull() ==False),'postsort'] = 2
-    #realnm = df[df['presort']==2].index
-    #print(realnm) 
-    #63 obs -> presort ==2 checked
 
     df_post =df_post.filter(items=['postsort', 'fiscal_efficiency', 'reserve_price', 'experience', 'population', 'discount', 'n_bidders', 'overrun_ratio', 'delay_ratio', 'days_to_award'])
     df_post['reserve_price']= df_post['reserve_price']/1000 #rp = three digits or four
@@ -96,11 +65,68 @@ def postsort_describe(data):
 
     idx = df_post[df_post['postsort'].isnull() == True].index
     df_post = df_post.drop(idx)
-    print(df_post.shape) #1781 obs deleted checked
     df_post.head() # (1223,10)
 
     #descriptive
     post_describe = df_post.groupby('postsort')[['discount', 'overrun_ratio', 'delay_ratio', 'days_to_award', 'reserve_price',  'n_bidders', 'population', 'experience',
                                                  'fiscal_efficiency']].describe()
     
-    return post_descrbie
+    return(post_describe)
+
+
+def basic_setting(data):
+    #construct work category dummy
+    df = data
+    df['OG03_dummy'] = 0
+    df.loc[(df['work_category']=='OG03')&(df['work_category']!=''),'OG03_dummy'] = 1
+    
+    df['OG01_dummy'] = 0
+    df.loc[(df['work_category']=='OG01')&(df['work_category']!=''),'OG01_dummy'] = 1
+    
+    df['OG_rest_dummy'] = 0
+    df.loc[(df['OG01_dummy']!=1)&(df['OG03_dummy']!=1)&(df['work_category']!=''),'OG_rest_dummy'] = 1
+    
+    df['OG_dummy'] = 0
+    df.loc[df['work_category'].str[0:2] == 'OG','OG_dummy'] = 1
+    
+    df['OS_dummy'] = 0
+    df.loc[df['work_category'].str[0:2] == 'OS','OS_dummy'] = 1
+    
+    #treated vs controls
+    df['trend'] = df['year'] - 1999
+
+    df['trend_treat'] = df['trend']
+    df.loc[(df['authority_code']!=3090272)&(df['authority_code']!=3070001),'trend_treat'] = 0
+
+    df['trend_control'] = df['trend']
+    df.loc[(df['authority_code']==3090272)|(df['authority_code']==3070001),'trend_control'] = 0
+
+    #PA specifics
+    df = df.sort_values(by='authority_code',ascending=True)
+
+    auth_list = df['authority_code'].values.tolist()
+    auth_list = list(set(auth_list))
+    df['id_auth'] = 0
+    for i in range(len(df)):
+        for j in range(len(auth_list)):
+            if df.loc[i,'authority_code'] == auth_list[j]:
+                df.loc[i,'id_auth'] = j+1
+
+    work_dum = pd.get_dummies(df['work_category'])
+    year_dum = pd.get_dummies(df['year'])
+    work_list = list(work_dum.columns)
+    year_list = list(year_dum.columns)
+
+    df_dum = pd.concat([year_dum, work_dum],axis = 1)
+    df = pd.concat([df, df_dum],axis = 1)
+    
+    return(df)
+
+def calc_vif(X):
+
+    # Calculating VIF
+    vif = pd.DataFrame()
+    vif["variables"] = X.columns
+    vif["VIF"] = [variance_inflation_factor(X.values, i) for i in range(X.shape[1])]
+
+    return(vif)
