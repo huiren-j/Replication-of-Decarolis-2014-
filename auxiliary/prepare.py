@@ -1,3 +1,14 @@
+import pandas as pd
+import numpy as np
+import matplotlib as plt
+from linearmodels import PanelOLS
+import statsmodels.api as sm
+import econtools as econ
+import econtools.metrics as mt
+
+from auxiliary.prepare import *
+
+
 def prepare_data(data):
     idx = data[(data['authority_code']==3091058)].index
     df_desc = data.drop(idx)
@@ -22,7 +33,7 @@ def prepare_data(data):
     return df_desc
 
 def presort_describe(data):
-    df_pre = df_desc
+    df_pre = data
     df_pre['presort'] = np.nan
     df_pre.loc[(df_pre['sample']==0)&(df_pre['pre_experience']>=5),'presort'] = 3
     #idx = df[(df['presort'].isnull()==True)].index
@@ -54,6 +65,42 @@ def presort_describe(data):
     #(1193,10) checked
 
     #descriptive
-    df_pre.groupby('presort')[['discount', 'overrun_ratio', 'delay_ratio', 'days_to_award', 'reserve_price',  'n_bidders', 'population', 'experience', 'fiscal_efficiency']].describe()
+    pre_describe = df_pre.groupby('presort')[['discount', 'overrun_ratio', 'delay_ratio', 'days_to_award', 'reserve_price',  'n_bidders', 'population', 'experience',
+                                              'fiscal_efficiency']].describe()
     
-    return df_pre
+    return pre_describe
+
+def postsort_describe(data):
+    df_post = df_desc
+    df_post['postsort'] = np.nan
+    df_post.loc[(df_post['sample']==1)&(df_post['post_experience']>=5),'postsort'] = 3
+    #idx = df[(df['presort'].isnull()==True)].index
+    #print(idx) 1811 obs = NaN checked
+
+    #realnm = df[df['presort']==3].index
+    #print(realnm); starting point, 1193 obs were presrot=3  
+
+    df_post.loc[(df_post['authority_code']==3090272)&(df_post['postsort'].isnull()==False),'postsort'] = 1
+    #realnm = df[df['presort']==1].index
+    #print(realnm) 
+    ##121 obs -> presort ==1 chekced
+
+    df_post.loc[(df_post['authority_code']==3070001)& (df_post['postsort'].isnull() ==False),'postsort'] = 2
+    #realnm = df[df['presort']==2].index
+    #print(realnm) 
+    #63 obs -> presort ==2 checked
+
+    df_post =df_post.filter(items=['postsort', 'fiscal_efficiency', 'reserve_price', 'experience', 'population', 'discount', 'n_bidders', 'overrun_ratio', 'delay_ratio', 'days_to_award'])
+    df_post['reserve_price']= df_post['reserve_price']/1000 #rp = three digits or four
+    df_post['population']=df_post['population']/1000
+
+    idx = df_post[df_post['postsort'].isnull() == True].index
+    df_post = df_post.drop(idx)
+    print(df_post.shape) #1781 obs deleted checked
+    df_post.head() # (1223,10)
+
+    #descriptive
+    post_describe = df_post.groupby('postsort')[['discount', 'overrun_ratio', 'delay_ratio', 'days_to_award', 'reserve_price',  'n_bidders', 'population', 'experience',
+                                                 'fiscal_efficiency']].describe()
+    
+    return post_descrbie
