@@ -155,6 +155,8 @@ def table2_col2(data):
 
 def table2_col3(data):
     df = data
+    work_list = df['work_category'].unique()
+    year_list = df['year'].unique()
     df_reg_co = df[(df['turin_co_sample']==1)&(df['ctrl_pop_turin_co_sample']==1)&(df['post_experience']>= 5) & (df['pre_experience']>=5) &(df['post_experience'].isnull() == False ) & 
                    (df['pre_experience'].isnull()==False)&(df['missing']==0)]
     outcome = ['discount', 'delay_ratio', 'overrun_ratio', 'days_to_award']
@@ -183,12 +185,24 @@ def table2_col3(data):
                 
         exog = exog_var + reg_col
         exog.remove(2000)
-
-        fe_reg = mt.reg(df_name, o, exog, fe_name = 'authority_code', cluster = 'auth_anno')
+        
+        
+        if o == 'discount':
+            fe_reg_discount = mt.reg(df_reg_co, o, exog, fe_name = 'authority_code', cluster = 'auth_anno')
+        elif o == 'delay_ratio':
+            fe_reg_delay = mt.reg(df_reg_co, o, exog, fe_name = 'authority_code', cluster = 'auth_anno')
+        elif o == 'overrun_ratio':
+            fe_reg_overrun = mt.reg(df_reg_co, o, exog, fe_name = 'authority_code', cluster = 'auth_anno',check_colinear = True)
+        else :
+            fe_reg_award = mt.reg(df_reg_co, o, exog, fe_name = 'authority_code', cluster = 'auth_anno',check_colinear = True)
+    
+    fe_reg = (fe_reg_discount, fe_reg_delay, fe_reg_overrun, fe_reg_award )
     return(fe_reg)
     
 def table2_col4(data):
     df = data
+    work_list = df['work_category'].unique()
+    year_list = df['year'].unique()
     df_reg_co = df[(df['turin_co_sample']==1)&(df['ctrl_pop_turin_co_sample']==1)&(df['post_experience']>= 5) & (df['pre_experience']>=5) &(df['post_experience'].isnull() == False ) & 
                    (df['pre_experience'].isnull()==False)&(df['missing']==0)]
     outcome = ['discount', 'delay_ratio', 'overrun_ratio', 'days_to_award']
@@ -224,11 +238,23 @@ def table2_col4(data):
         exog.remove('OG01')
         exog.remove('municipality')
 
-        fe_reg = mt.reg(df_name, o, exog, fe_name = 'authority_code', cluster = 'auth_anno')
+        
+        if o == 'discount':
+            fe_reg_discount = mt.reg(df_reg_co, o, exog, fe_name = 'authority_code', cluster = 'auth_anno')
+        elif o == 'delay_ratio':
+            fe_reg_delay = mt.reg(df_reg_co, o, exog, fe_name = 'authority_code', cluster = 'auth_anno')
+        elif o == 'overrun_ratio':
+            fe_reg_overrun = mt.reg(df_reg_co, o, exog, fe_name = 'authority_code', cluster = 'auth_anno',check_colinear = True)
+        else :
+            fe_reg_award = mt.reg(df_reg_co, o, exog, fe_name = 'authority_code', cluster = 'auth_anno',check_colinear = True)
+        
+    fe_reg = (fe_reg_discount, fe_reg_delay, fe_reg_overrun, fe_reg_award )
     return(fe_reg)
     
 def table2_col5(data):
     df = data
+    work_list = df['work_category'].unique()
+    year_list = df['year'].unique()
     df_reg_co = df[(df['turin_co_sample']==1)&(df['ctrl_pop_exp_turin_co_sample']==1)&(df['post_experience']>= 5) & (df['pre_experience']>=5) &(df['post_experience'].isnull() == False ) & 
                    (df['pre_experience'].isnull()==False)&(df['missing']==0)]
     outcome = ['discount', 'delay_ratio', 'overrun_ratio', 'days_to_award']
@@ -257,12 +283,23 @@ def table2_col5(data):
                 
         exog = exog_var + reg_col
         exog.remove(2000)
+        if o == 'discount':
+            fe_reg_discount = mt.reg(df_reg_co, o, exog, fe_name = 'authority_code', cluster = 'auth_anno')
+        elif o == 'delay_ratio':
+            fe_reg_delay = mt.reg(df_reg_co, o, exog, fe_name = 'authority_code', cluster = 'auth_anno')
+        elif o == 'overrun_ratio':
+            fe_reg_overrun = mt.reg(df_reg_co, o, exog, fe_name = 'authority_code', cluster = 'auth_anno',check_colinear = True)
+        else :
+            fe_reg_award = mt.reg(df_reg_co, o, exog, fe_name = 'authority_code', cluster = 'auth_anno',check_colinear = True)
+        
 
-        fe_reg = mt.reg(df_name, o, exog, fe_name = 'authority_code', cluster = 'auth_anno')
+    fe_reg = (fe_reg_discount, fe_reg_delay, fe_reg_overrun, fe_reg_award )
     return(fe_reg)    
     
 def table2_col6(data):
     df = data
+    work_list = df['work_category'].unique()
+    year_list = df['year'].unique()
     df_reg_co = df[(df['turin_co_sample']==1)&(df['ctrl_pop_exp_turin_co_sample']==1)&(df['post_experience']>= 5) & (df['pre_experience']>=5) &(df['post_experience'].isnull() == False ) & 
                    (df['pre_experience'].isnull()==False)&(df['missing']==0)]
     outcome = ['discount', 'delay_ratio', 'overrun_ratio', 'days_to_award']
@@ -298,8 +335,18 @@ def table2_col6(data):
         exog.remove(2000)
         exog.remove('OG01')
         exog.remove('municipality')
+        
+        if o == 'discount':
+            fe_reg_discount = mt.reg(df_reg_co, o, exog, fe_name = 'authority_code', cluster = 'auth_anno')
+        elif o == 'delay_ratio':
+            fe_reg_delay = mt.reg(df_reg_co, o, exog, fe_name = 'authority_code', cluster = 'auth_anno')
+        elif o == 'overrun_ratio':
+            fe_reg_overrun = mt.reg(df_reg_co, o, exog, fe_name = 'authority_code', cluster = 'auth_anno',check_colinear = True)
+        else :
+            fe_reg_award = mt.reg(df_reg_co, o, exog, fe_name = 'authority_code', cluster = 'auth_anno',check_colinear = True)
 
-        fe_reg = mt.reg(df_name, o, exog, fe_name = 'authority_code', cluster = 'auth_anno')
+        
+    fe_reg = (fe_reg_discount, fe_reg_delay, fe_reg_overrun, fe_reg_award )
     return(fe_reg)
         
         
