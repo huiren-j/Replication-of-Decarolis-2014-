@@ -1,3 +1,15 @@
+import pandas as pd
+import numpy as np
+import matplotlib as plt
+from linearmodels import PanelOLS
+import statsmodels.api as sm
+import econtools as econ
+import econtools.metrics as mt
+from statsmodels.stats.outliers_influence import variance_inflation_factor
+
+from auxiliary.prepare import *
+from auxiliary.table2 import*
+from auxiliary.table_formula import *
 
 def table3_col1(data):
     df = data
@@ -214,6 +226,7 @@ def table3_col4(data):
 
 
 def table3_col5(data):
+    df = data
     df_reg_pr = df[(df['turin_pr_sample']==1)&(df['ctrl_pop_exp_turin_pr_sample']==1)&(df['post_experience']>= 5) & (df['pre_experience']>=5) &(df['post_experience'].isnull() == False ) & 
                    (df['pre_experience'].isnull()==False)&(df['missing']==0)]
     outcome = ['discount', 'delay_ratio', 'overrun_ratio', 'days_to_award']
@@ -263,6 +276,7 @@ def table3_col5(data):
 
 
 def table3_col6(data):
+    df = data
     df_reg_pr = df[(df['turin_pr_sample']==1)&(df['ctrl_pop_exp_turin_pr_sample']==1)&(df['post_experience']>= 5) & (df['pre_experience']>=5) &(df['post_experience'].isnull() == False ) & 
                    (df['pre_experience'].isnull()==False)&(df['missing']==0)]
     outcome = ['discount', 'delay_ratio', 'overrun_ratio', 'days_to_award']

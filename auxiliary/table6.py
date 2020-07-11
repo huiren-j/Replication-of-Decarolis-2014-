@@ -1,3 +1,17 @@
+import pandas as pd
+import numpy as np
+import matplotlib as plt
+from linearmodels import PanelOLS
+import statsmodels.api as sm
+import econtools as econ
+import econtools.metrics as mt
+from statsmodels.stats.outliers_influence import variance_inflation_factor
+
+from auxiliary.prepare import *
+from auxiliary.table2 import*
+from auxiliary.table_formula import *
+
+
 def table6_setting(data):
     df = data
     work_list = df['work_category'].unique()
@@ -28,7 +42,8 @@ def table6_col1(data):
     treatment = ['turin_co_sample','turin_pr_sample']
     
     for t in treatment:
-        df_reg_co = df[(df[t]==1)&(df['ctrl_exp_' + t]==1)&(df['post_experience']>= 5) & (df['pre_experience']>=5) &(df['post_experience'].isnull() == False ) & (df['pre_experience'].isnull()==False)&(df['missing']==0)]
+        df_reg_co = df[(df[t]==1)&(df['ctrl_exp_' + t]==1)&(df['post_experience']>= 5) & (df['pre_experience']>=5) &(df['post_experience'].isnull() == False ) & (df['pre_experience'].isnull()==False)&
+                       (df['missing']==0)]
 
         #vif cal
         #first, make a column list
@@ -77,7 +92,8 @@ def tabble6_col2(data):
     treatment = ['turin_co_sample','turin_pr_sample']
 
     for t in treatment:
-        df_reg_co = df[(df[t+'_full']==1)&(df['ctrl_exp_' + t]==1)&(df['post_experience']>= 5) & (df['pre_experience']>=5) &(df['post_experience'].isnull() == False ) & (df['pre_experience'].isnull()==False)&(df['missing']==0)]
+        df_reg_co = df[(df[t+'_full']==1)&(df['ctrl_exp_' + t]==1)&(df['post_experience']>= 5) & (df['pre_experience']>=5) &(df['post_experience'].isnull() == False ) & 
+                       (df['pre_experience'].isnull()==False)&(df['missing']==0)]
 
         #first, make a column list
         reg_col = []
@@ -124,7 +140,8 @@ def table6_col3(data):
     treatment = ['turin_co_sample','turin_pr_sample']
 
     for t in treatment:
-        df_reg_co = df[(df[t]==1)&(df['ctrl_exp_'+t] == 1)&(df['post_experience']>= 5) & (df['pre_experience']>=5) &(df['post_experience'].isnull() == False ) & (df['pre_experience'].isnull()==False)&(df['missing']==1)]
+        df_reg_co = df[(df[t]==1)&(df['ctrl_exp_'+t] == 1)&(df['post_experience']>= 5) & (df['pre_experience']>=5) &(df['post_experience'].isnull() == False ) & (df['pre_experience'].isnull()==False)&
+                       (df['missing']==1)]
 
         #first, make a column list
         reg_col = []
@@ -171,7 +188,8 @@ def table6_col4(data):
     treatment = ['turin_co_sample','turin_pr_sample']
 
     for t in treatment:
-        df_reg_co = df[(df['complexity_dummy']==0)&(df[t]==1)&(df['ctrl_exp_'+t] == 1)&(df['post_experience']>= 5) & (df['pre_experience']>=5) &(df['post_experience'].isnull() == False ) & (df['pre_experience'].isnull()==False)&
+        df_reg_co = df[(df['complexity_dummy']==0)&(df[t]==1)&(df['ctrl_exp_'+t] == 1)&(df['post_experience']>= 5) & (df['pre_experience']>=5) &(df['post_experience'].isnull() == False ) & 
+                       (df['pre_experience'].isnull()==False)&
                        (df['missing']==0)]
 
         #first, make a column list
@@ -222,7 +240,8 @@ def table6_col5(data):
     treatment = ['turin_co_sample','turin_pr_sample']
 
     for t in treatment:
-        df_reg_co = df[(df['complexity_dummy']==1)&(df[t]==1)&(df['ctrl_exp_'+t] == 1)&(df['post_experience']>= 5) & (df['pre_experience']>=5) &(df['post_experience'].isnull() == False ) & (df['pre_experience'].isnull()==False)&
+        df_reg_co = df[(df['complexity_dummy']==1)&(df[t]==1)&(df['ctrl_exp_'+t] == 1)&(df['post_experience']>= 5) & (df['pre_experience']>=5) &(df['post_experience'].isnull() == False ) & 
+                       (df['pre_experience'].isnull()==False)&
                        (df['missing']==0)]
 
         #first, make a column list
@@ -271,7 +290,8 @@ def table6_col6(data):
     treatment = ['turin_co_sample','turin_pr_sample']
 
     for t in treatment:
-        df_reg_co = df[(df['post01pre05']==1)&(df[t]==1)&(df['ctrl_exp_'+t] == 1)&(df['post_experience']>= 5) & (df['pre_experience']>=5) &(df['post_experience'].isnull() == False ) & (df['pre_experience'].isnull()==False)&
+        df_reg_co = df[(df['post01pre05']==1)&(df[t]==1)&(df['ctrl_exp_'+t] == 1)&(df['post_experience']>= 5) & (df['pre_experience']>=5) &(df['post_experience'].isnull() == False ) & 
+                       (df['pre_experience'].isnull()==False)&
                        (df['missing']==0)]
 
         #first, make a column list
@@ -319,7 +339,8 @@ def table6_col7(data):
     treatment = ['turin_co_sample','turin_pr_sample']
 
     for t in treatment:
-        df_reg_co = df[(df['post02pre04']==1)&(df[t]==1)&(df['ctrl_exp_'+t] == 1)&(df['post_experience']>= 5) & (df['pre_experience']>=5) &(df['post_experience'].isnull() == False ) & (df['pre_experience'].isnull()==False)&
+        df_reg_co = df[(df['post02pre04']==1)&(df[t]==1)&(df['ctrl_exp_'+t] == 1)&(df['post_experience']>= 5) & (df['pre_experience']>=5) &(df['post_experience'].isnull() == False ) & 
+                       (df['pre_experience'].isnull()==False)&
                        (df['missing']==0)]
 
         #vif cal

@@ -63,29 +63,51 @@ def reg_tab(parameter, data, column):
 
     return(df_table)
 
-def table4(parameter, data, column):
-    table_string = econ.outreg(parameter, ['fpsb_auction'], ['First Price Auction'], digits = 3)
-    table_string += econ.table_statrow("R$^2$", [x.r2 for x in parameter], digits =3)
-    table_string += econ.table_statrow("Number of Observation", [x.N for x in parameter])
+def table4(parameter1, parameter2, data):
+    table_string = econ.outreg(parameter1, ['fpsb_auction'], ['First Price Auction'], digits = 3)
+    table_string += econ.table_statrow("R$^2$", [x.r2 for x in parameter1], digits =3)
+    table_string += econ.table_statrow("Number of Observation", [x.N for x in parameter1])
     table_list = table_string.split('&')
     table_list = [i.split('\\\\ \n',1)[0] for i in table_list]
     table_list.remove(table_list[0])
     
-    df_table = data
     col_title_odd = ['W.Discount(1)', 'Extra Cost(3)', 'Extra Time(5)', 'Days Award(7)']
     col_title_even = ['W.Discount(2)','Extra Cost(4)', 'Extra Time(6)', 'Days Award(8)'] 
     value_title = ['First Auction Price','Standard Error','R$^2$','Observations']
-    Panel =['A','B']
-
-    #colunm 순서로 넣어주는 게 편해
-    for i in range(0,4):
-        for col in col_title_odd:
-            for j in range(len(value_title)):
-                df_table.loc[j, col = table_list[i]
-                df_table.loc[j, 'value_title'] = value_title[j]
-                i = i+4
-    return(df_table)
-  
-    df_table = df_table.sort_values(by='Panel',ascending = True).set_index(['Panel','value_title'])
-
+    
+    for i in range(len(table_list)):
+        if i<4:
+            df_table.loc[0,'value_title'] = value_title[0]
+            df_table.loc[0,col_title_odd[i]] = table_list[i]
+        elif i>=4 and i<8:
+            df_table.loc[4,'value_title'] = value_title[1]
+            df_table.loc[4, col_title_odd[i-4]] = table_list[i]
+        elif i>=8 and i<12:
+            df_table.loc[8,'value_title'] = value_title[2]
+            df_table.loc[8,col_title_odd[i-8]] = table_list[i]
+        else:
+            df_table.loc[12,'value_title'] = value_title[3]
+            df_table.loc[12,col_title_odd[i-12]] = table_list[i]
+            
+    table_string2 = econ.outreg(parameter2, ['fpsb_auction'], ['First Price Auction'], digits = 3)
+    table_string2 += econ.table_statrow("R$^2$", [x.r2 for x in parameter2], digits =3)
+    table_string2 += econ.table_statrow("Number of Observation", [x.N for x in parameter2])
+    table_list2 = table_string2.split('&')
+    table_list2 = [i.split('\\\\ \n',1)[0] for i in table_list2]
+    table_list2.remove(table_list2[0])
+    
+    for i in range(len(table_list2)):
+        if i<4:
+            df_table.loc[0,'value_title'] = value_title[0]
+            df_table.loc[0,col_title_even[i]] = table_list[i]
+        elif i>=4 and i<8:
+            df_table.loc[4,'value_title'] = value_title[1]
+            df_table.loc[4, col_title_even[i-4]] = table_list[i]
+        elif i>=8 and i<12:
+            df_table.loc[8,'value_title'] = value_title[2]
+            df_table.loc[8,col_title_even[i-8]] = table_list[i]
+        else:
+            df_table.loc[12,'value_title'] = value_title[3]
+            df_table.loc[12,col_title_even[i-12]] = table_list[i]
+            
     return(df_table)

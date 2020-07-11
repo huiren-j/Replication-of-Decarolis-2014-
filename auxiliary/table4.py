@@ -1,18 +1,31 @@
+import pandas as pd
+import numpy as np
+import matplotlib as plt
+from linearmodels import PanelOLS
+import statsmodels.api as sm
+import econtools as econ
+import econtools.metrics as mt
+from statsmodels.stats.outliers_influence import variance_inflation_factor
+
+from auxiliary.prepare import *
+from auxiliary.table2 import*
+from auxiliary.table_formula import *
+
+
 def table4_setting(data):
     
     df = data
     auth_list = df['authority_code'].unique()
+    
     for i in range(len(auth_list)):
-    name = 'trend_pa_'+str(i+1)
-    df[name] = 0
-    for j in range(len(df)):
-        if df.loc[j, 'id_auth'] == i+1 :
-            df.loc[j, name] = df.loc[j,'trend']
-        if df.loc[j, 'authority_code']==3090272 or df.loc[j, 'authority_code']==3070001:
-            df.loc[j, name] = 0
+        name = 'trend_pa_'+str(i+1)
+        df[name] = 0
+        df.loc[(df['authority_code']==3090272)| (df['authority_code']==3070001), name]
+        for j in range(len(df)):
+            if df.loc[j, 'id_auth'] == i+1 :
+                df.loc[j, name] = df.loc[j,'trend']
 
     return(df)
-
 
 
 def table4_PanelA_odd(data):
