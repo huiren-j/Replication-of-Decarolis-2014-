@@ -8,8 +8,21 @@ import econtools.metrics as mt
 from statsmodels.stats.outliers_influence import variance_inflation_factor
 
 from auxiliary.prepare import *
-from auxiliary.table2 import*
+from auxiliary.table2 import *
+from auxiliary.table3 import *
+from auxiliary.table4 import *
+from auxiliary.table6 import *
 from auxiliary.table_formula import *
+
+def calc_vif(X):
+
+    # Calculating VIF
+    vif = pd.DataFrame()
+    vif["variables"] = X.columns
+    vif["VIF"] = [variance_inflation_factor(X.values, i) for i in range(X.shape[1])]
+
+    return(vif)
+
 
 def table3_col1(data):
     df = data

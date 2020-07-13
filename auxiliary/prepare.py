@@ -8,6 +8,11 @@ import econtools.metrics as mt
 from statsmodels.stats.outliers_influence import variance_inflation_factor
 
 from auxiliary.prepare import *
+from auxiliary.table2 import *
+from auxiliary.table3 import *
+from auxiliary.table4 import *
+from auxiliary.table6 import *
+from auxiliary.table_formula import *
 
 
 def prepare_data(data):

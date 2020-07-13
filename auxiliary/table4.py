@@ -8,8 +8,20 @@ import econtools.metrics as mt
 from statsmodels.stats.outliers_influence import variance_inflation_factor
 
 from auxiliary.prepare import *
-from auxiliary.table2 import*
+from auxiliary.table2 import *
+from auxiliary.table3 import *
+from auxiliary.table4 import *
+from auxiliary.table6 import *
 from auxiliary.table_formula import *
+
+def calc_vif(X):
+
+    # Calculating VIF
+    vif = pd.DataFrame()
+    vif["variables"] = X.columns
+    vif["VIF"] = [variance_inflation_factor(X.values, i) for i in range(X.shape[1])]
+
+    return(vif)
 
 
 def table4_setting(data):
@@ -92,7 +104,8 @@ def table4_PanelA_even(data):
     outcome = ['discount', 'delay_ratio','overrun_ratio', 'days_to_award']
 
     for o in outcome:
-        df_reg_co = df[(df['turin_co_sample']==1)&(df['ctrl_exp_turin_co_sample']==1)&(df['post_experience']>= 5) & (df['pre_experience']>=5) &(df['post_experience'].isnull() == False ) & (df['pre_experience'].isnull()==False)&
+        df_reg_co = df[(df['turin_co_sample']==1)&(df['ctrl_exp_turin_co_sample']==1)&(df['post_experience']>= 5) & (df['pre_experience']>=5) &(df['post_experience'].isnull() == False ) & 
+                       (df['pre_experience'].isnull()==False)&
                        (df['missing']==0)]
 
         #first, make a column list
@@ -209,7 +222,8 @@ def table4_PanelB_even(data):
     year_list = df['year'].unique()
     
     for o in outcome:
-        df_reg_co = df[(df['turin_pr_sample']==1)&(df['ctrl_exp_turin_pr_sample']==1)&(df['post_experience']>= 5) & (df['pre_experience']>=5) &(df['post_experience'].isnull() == False ) & (df['pre_experience'].isnull()==False)&
+        df_reg_co = df[(df['turin_pr_sample']==1)&(df['ctrl_exp_turin_pr_sample']==1)&(df['post_experience']>= 5) & (df['pre_experience']>=5) &(df['post_experience'].isnull() == False ) & 
+                       (df['pre_experience'].isnull()==False)&
                        (df['missing']==0)]
 
         #first, make a column list
