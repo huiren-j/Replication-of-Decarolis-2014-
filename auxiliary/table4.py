@@ -277,3 +277,18 @@ def table4_PanelB_even(data):
         
     fe_reg = (fe_reg_discount, fe_reg_delay, fe_reg_overrun, fe_reg_award )
     return(fe_reg)
+
+
+def table4_odd(data):
+    table4_list = []
+    table4_list.append(table4_PanelA_odd(data))
+    table4_list.append(table4_PanelB_odd(data))
+    
+    return(table4_list)
+
+def table4_even(data):
+    table4_list = []
+    table4_list.append(table4_PanelA_even(data))
+    table4_list.append(table4_PanelB_even(data))
+    
+    return(table4_list)

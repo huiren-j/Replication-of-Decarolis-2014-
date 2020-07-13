@@ -25,8 +25,9 @@ def calc_vif(X):
 
 def table6_setting(data):
     df = data
-    work_list = df['work_category'].unique()
-    year_list = df['year'].unique()
+    #work_list = df['work_category'].unique()
+    #year_list = df['year'].unique()
+    
     df['post01pre05'] = 0
     for i in range(len(df)):
         if df.loc[i,'year'] >= 2001 and df.loc[i,'year'] <= 2005 and pd.isnull(df.loc[i,'year']) == False:
@@ -42,7 +43,7 @@ def table6_setting(data):
         if df.loc[i,'complex_work'] ==2 or df.loc[i,'complex_work']==3:
             df.loc[i, 'complexity_dummy'] = 1
     
-    complex_list = df['year'].unique()
+    #complex_list = df['year'].unique()
     
     return(df)
 
@@ -96,7 +97,7 @@ def table6_col1(data):
     return(fe_reg)
 
 
-def tabble6_col2(data):
+def table6_col2(data):
     df = data
     work_list = df['work_category'].unique()
     year_list = df['year'].unique()
@@ -145,7 +146,7 @@ def tabble6_col2(data):
 
 
 def table6_col3(data):
-    data = df
+    df= data
     work_list = df['work_category'].unique()
     year_list = df['year'].unique()
     treatment = ['turin_co_sample','turin_pr_sample']
@@ -295,7 +296,7 @@ def table6_col5(data):
 
 
 def table6_col6(data):
-    data = df
+    df = data
     work_list = df['work_category'].unique()
     year_list = df['year'].unique()
     treatment = ['turin_co_sample','turin_pr_sample']
@@ -391,5 +392,18 @@ def table6_col7(data):
         else:
             fe_reg_pr = mt.reg(df_reg_co, 'discount', exog, fe_name = 'authority_code', cluster = 'auth_anno')
     
-    fe_reg = (fe_reg_co, fe_reg_pr )
+    fe_reg = (fe_reg_co, fe_reg_pr)
     return(fe_reg)
+
+
+def table6_list(data):
+    table6_list = []
+    table6_list.append(table6_col1(data))
+    table6_list.append(table6_col2(data))
+    table6_list.append(table6_col3(data))
+    table6_list.append(table6_col4(data))
+    table6_list.append(table6_col5(data))
+    table6_list.append(table6_col6(data))
+    table6_list.append(table6_col7(data))
+    
+    return(table6_list)

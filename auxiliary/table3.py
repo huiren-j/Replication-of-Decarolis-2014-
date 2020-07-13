@@ -345,3 +345,15 @@ def table3_col6(data):
         
     fe_reg = (fe_reg_discount, fe_reg_delay, fe_reg_overrun, fe_reg_award )
     return(fe_reg)
+
+def table3_list(data):
+    table3_list= []
+    table3_list.append(table3_col1(data))
+    table3_list.append(table3_col2(data))
+    table3_list.append(table3_col3(data))
+    table3_list.append(table3_col4(data))
+    table3_list.append(table3_col5(data))
+    table3_list.append(table3_col6(data))
+    
+    return(table3_list)
+    
