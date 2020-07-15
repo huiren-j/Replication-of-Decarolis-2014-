@@ -73,7 +73,7 @@ def table4_PanelA_odd(data):
                 reg_col.remove(vif.loc[i, 'variables'])
             elif vif.loc[i,'VIF'] > 10:
                 for j in exog_var:
-                    if str(vif.loc[i,'variables']) is j and vif.loc[i,'variables'] is not 'fpsb_auction' and vif.loc[i,'variables'] is not 'id_auth':
+                    if str(vif.loc[i,'variables']) is j and vif.loc[i,'variables'] is not 'fpsb_auction' :
                         exog_var.remove(vif.loc[i,'variables'])
 
         exog = exog_var + reg_col
