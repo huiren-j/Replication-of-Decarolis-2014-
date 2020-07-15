@@ -107,60 +107,8 @@ def main_table(parameter):
 
     return(df_table)
 
+
 def table4(parameter1, parameter2):
-    df_table = pd.DataFrame({'Panel':[], 'value_title':[],'W.Discount(1)':[],'W.Discount(2)':[],'Extra Cost(3)':[],'Extra Cost(4)':[],'Extra Time(5)':[],'Extra Time(6)':[],'Days Award(7)':[],'Days Award(8)':
-                             []})
-    
-    table_string = econ.outreg(parameter1, ['fpsb_auction'], ['First Price Auction'], digits = 3)
-    table_string += econ.table_statrow("R$^2$", [x.r2 for x in parameter1], digits =3)
-    table_string += econ.table_statrow("Number of Observation", [x.N for x in parameter1])
-    table_list = table_string.split('&')
-    table_list = [i.split('\\\\ \n',1)[0] for i in table_list]
-    table_list.remove(table_list[0])
-    
-    col_title_odd = ['W.Discount(1)', 'Extra Cost(3)', 'Extra Time(5)', 'Days Award(7)']
-    col_title_even = ['W.Discount(2)','Extra Cost(4)', 'Extra Time(6)', 'Days Award(8)'] 
-    value_title = ['First Auction Price','Standard Error','R$^2$','Observations']
-                  
-    for i in range(len(table_list)):
-        if i<4:
-            df_table.loc[0,'value_title'] = value_title[0]
-            df_table.loc[0,col_title_odd[i]] = table_list[i]
-        elif i>=4 and i<8:
-            df_table.loc[4,'value_title'] = value_title[1]
-            df_table.loc[4, col_title_odd[i-4]] = table_list[i]
-        elif i>=8 and i<12:
-            df_table.loc[8,'value_title'] = value_title[2]
-            df_table.loc[8,col_title_odd[i-8]] = table_list[i]
-        else:
-            df_table.loc[12,'value_title'] = value_title[3]
-            df_table.loc[12,col_title_odd[i-12]] = table_list[i]
-            
-    table_string2 = econ.outreg(parameter2, ['fpsb_auction'], ['First Price Auction'], digits = 3)
-    table_string2 += econ.table_statrow("R$^2$", [x.r2 for x in parameter2], digits =3)
-    table_string2 += econ.table_statrow("Number of Observation", [x.N for x in parameter2])
-    table_list2 = table_string2.split('&')
-    table_list2 = [i.split('\\\\ \n',1)[0] for i in table_list2]
-    table_list2.remove(table_list2[0])
-    
-    for i in range(len(table_list2)):
-        if i<4:
-            df_table.loc[0,'value_title'] = value_title[0]
-            df_table.loc[0,col_title_even[i]] = table_list2[i]
-        elif i>=4 and i<8:
-            df_table.loc[4,'value_title'] = value_title[1]
-            df_table.loc[4, col_title_even[i-4]] = table_list2[i]
-        elif i>=8 and i<12:
-            df_table.loc[8,'value_title'] = value_title[2]
-            df_table.loc[8,col_title_even[i-8]] = table_list2[i]
-        else:
-            df_table.loc[12,'value_title'] = value_title[3]
-            df_table.loc[12,col_title_even[i-12]] = table_list2[i]
-            
-    return(df_table)
-
-
-def table4_new(parameter1, parameter2):
     df_table = pd.DataFrame({'Panel':[], 'value_title':[],'W.Discount(1)':[],'W.Discount(2)':[],'Extra Cost(3)':[],'Extra Cost(4)':[],'Extra Time(5)':[],'Extra Time(6)':[],'Days Award(7)':[],'Days Award(8)':
                              []})
                
@@ -278,4 +226,52 @@ def table6(parameter):
     df_table = df_table.sort_values(by='Panel',ascending = True).set_index(['Panel','value_title'])
     return(df_table)
 
-        
+
+def table7(dataA, dataB):
+    #panelA
+    df = dataA
+    df_table = pd.DataFrame(index =['PanelA: Voluntary swtiching to FPAs', 'Winning discount', 'Days to award', 'Reserve price', 'Number of bidders', 'Conract Duration', 'Miles PA from Turin', 'Population', 'Experience'], columns= [['AB Auctions','AB Auctions','AB Auctions','AB Auctions','FB Auctions','FB Auctions','FB Auctions','FB Auctions'],['Mean','SD','p50','N','Mean','SD','p50','N']])
+    table_values= ['Winning discount', 'Days to award', 'Reserve price', 'Number of bidders', 'Conract Duration', 'Miles PA from Turin', 'Population', 'Experience']
+    auction_type= ['AB Auctions','FB Auctions']
+    
+    columns = [ 'discount','days_to_award','reserve_price', 'n_bidders', 'contract_duration',  'miles_pa_torino', 'population', 'experience' ]
+    values = ['mean','std','50%','count']
+    index = [0.0, 1.0]
+    
+    df_table.loc['PanelA: Voluntary swtiching to FPAs', :] = '-'
+    
+    for i in range(len(columns)):
+        #row
+        for j in index:
+            #column
+            df_table.loc[table_values[i], (auction_type[int(j)],'Mean')] =df.loc[j, (columns[i], 'mean')]
+            df_table.loc[table_values[i], (auction_type[int(j)],'SD')] =df.loc[j, (columns[i], 'std')]
+            df_table.loc[table_values[i], (auction_type[int(j)],'p50')] = df.loc[j,(columns[i],'50%')]
+            df_table.loc[table_values[i], (auction_type[int(j)],'N')] =df.loc[j, (columns[i], 'count')]
+    
+    df_tableA = df_table
+    
+    #panelB
+    df = dataB
+    df_table = pd.DataFrame(index =['PanelB.Forced to switch to FPAs','Winning discount', 'Days to award', 'Reserve price', 'Number of bidders', 'Conract Duration', 'Miles PA from Turin', 'Population', 'Experience'], columns= [['AB Auctions','AB Auctions','AB Auctions','AB Auctions','FB Auctions','FB Auctions','FB Auctions','FB Auctions'],['Mean','SD','p50','N','Mean','SD','p50','N']])
+    table_values= ['Winning discount', 'Days to award', 'Reserve price', 'Number of bidders', 'Conract Duration', 'Miles PA from Turin', 'Population', 'Experience']
+    auction_type= ['AB Auctions','FB Auctions']
+    
+    columns = [ 'discount','days_to_award','reserve_price', 'n_bidders', 'contract_duration',  'miles_pa_torino', 'population', 'experience' ]
+    values = ['mean','std','50%','count']
+    index = [0.0, 1.0]
+    
+    df_table.loc['PanelB.Forced to switch to FPAs', :] = '-'
+    
+    for i in range(len(columns)):
+        #row
+        for j in index:
+            #column
+            df_table.loc[table_values[i], (auction_type[int(j)],'Mean')] =df.loc[j, (columns[i], 'mean')]
+            df_table.loc[table_values[i], (auction_type[int(j)],'SD')] =df.loc[j, (columns[i], 'std')]
+            df_table.loc[table_values[i], (auction_type[int(j)],'p50')] = df.loc[j,(columns[i],'50%')]
+            df_table.loc[table_values[i], (auction_type[int(j)],'N')] =df.loc[j, (columns[i], 'count')]
+    
+    df_tableB = df_table
+    df_table= pd.concat([df_tableA, df_tableB])
+    return(df_table)
