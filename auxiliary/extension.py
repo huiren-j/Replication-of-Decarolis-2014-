@@ -27,7 +27,7 @@ def calc_vif(X):
 
 '''extension with IE.dta'''
 
-def extension_setting_IE(IE, Authority):
+def extension_setting_IE(Authority, IE):
     df_IE = IE
     df_auth = Authority
     ctrl_exp_vlunt_list = df_IE.loc[df_IE['adopters_vlunt']==1,'experience'].unique()
@@ -138,6 +138,7 @@ def extension_setting_auth(Authority, IE):
     ctrl_pop_forced_list = df_IE.loc[df_IE['forcedfp_strict'],'population'].unique()
     df_auth['ctrl_exp_forcedfp_co'] = df_auth['ctrl_exp_turin_co_sample']
     df_auth['ctrl_exp_forcedfp_pr'] = df_auth['ctrl_exp_turin_pr_sample']
+    
     for i in ctrl_exp_forced_list:
         for j in range(len(df_auth)):
             if df_auth.loc[j, 'experience'] == i:
@@ -146,6 +147,7 @@ def extension_setting_auth(Authority, IE):
 
     df_auth['ctrl_pop_forcedfp_co'] = df_auth['ctrl_pop_turin_co_sample']
     df_auth['ctrl_pop_forcedfp_pr'] = df_auth['ctrl_pop_turin_pr_sample']
+    
     for i in ctrl_pop_forced_list:
         for j in range(len(df_auth)):
             if df_auth.loc[j, 'population'] == i:

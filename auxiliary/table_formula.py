@@ -54,7 +54,7 @@ def table1_postsort(data):
 
 def main_table(parameter):    
     df_table = pd.DataFrame({ 'Panel':[], 'value_title':[],'Control(1)':[],'Control(2)':[],'Control(3)':[],'Control(4)':[],'Control(5)':[],'Control(6)':[]})
-    value_title = ['First Auction Price','Standard Error','R$^2$','Observations']
+    value_title = ['First Price Auction','Standard Error','R$^2$','Observations']
     Panel =['A','B','C','D']
     column_list = ['Control(1)','Control(2)','Control(3)','Control(4)','Control(5)','Control(6)']
     col = 0
@@ -114,7 +114,7 @@ def table4(parameter1, parameter2):
                
     col_title_odd = ['W.Discount(1)', 'Extra Cost(3)', 'Extra Time(5)', 'Days Award(7)']
     col_title_even = ['W.Discount(2)','Extra Cost(4)', 'Extra Time(6)', 'Days Award(8)'] 
-    value_title = ['First Auction Price','Standard Error','R$^2$','Observations']
+    value_title = ['First Price Auction','Standard Error','R$^2$','Observations']
     Panel = ['A','B']
     
     j = 0  
@@ -181,13 +181,37 @@ def table4(parameter1, parameter2):
     df_table = df_table.set_index(['Panel'])
     return(df_table)
 
+def table5_A(parm1, parm2):
+    table5_PanelA = pd.DataFrame(index =['PA-Year','PA'], columns=['W.Bid(1)','W.Bid(2)','Extra cost(3)','Extra cost(4)','Extra time(5)','Extra time(6)','Days awrd(7)','Days awrd(8)'])
+    for i in range(len(parm1)):
+        k=0
+        l=1
+        for j in range(0,4):
+            table5_PanelA.iloc[i,k] = '(' + str(int(parm1.iloc[i,k])) + ';' + str(int(parm1.iloc[i,k+1])) +')'
+            table5_PanelA.iloc[i,l] = '(' + str(int(parm2.iloc[i,k])) + ';' + str(int(parm2.iloc[i,k+1])) +')'
+            k = k+2
+            l= l+2
+    return(table5_PanelA)
+
+def table5_B(parm1, parm2):
+    table5_PanelB = pd.DataFrame(index =['PA-Year','PA'], columns=['W.Bid(1)','W.Bid(2)','Extra cost(3)','Extra cost(4)','Extra time(5)','Extra time(6)','Days awrd(7)','Days awrd(8)'])
+    for i in range(len(parm1)):
+        k=0
+        l=1
+        for j in range(0,4):
+            table5_PanelB.iloc[i,k] = '(' + str(int(parm1.iloc[i,k])) + ';' + str(int(parm1.iloc[i,k+1])) +')'
+            table5_PanelB.iloc[i,l] = '(' + str(int(parm2.iloc[i,k])) + ';' + str(int(parm2.iloc[i,k+1])) +')'
+            k = k+2
+            l= l+2
+    return(table5_PanelB)
+
                              
 def table6(parameter):
     
     df_table = pd.DataFrame({'Panel':[],'value_title':[],'Base':[], 'Full':[],'Missing':[],'Simple':[],'Complex':[],'2001-2005':[],'2002-2004':[]})
     column_list = ['Base', 'Full','Missing','Simple','Complex','2001-2005','2002-2004']
     col = 0
-    value_title = ['First Auction Price','Standard Error','R$^2$','Observations']
+    value_title = ['First Price Auction','Standard Error','R$^2$','Observations']
     Panel =['A','B']
     
     for parm in parameter:
@@ -274,4 +298,48 @@ def table7(dataA, dataB):
     
     df_tableB = df_table
     df_table= pd.concat([df_tableA, df_tableB])
+    return(df_table)
+
+def table_ext1(parameter):    
+    df_table = pd.DataFrame({'Panel':[],'value_title':[],'Control(1)':[],'Control(2)':[]})
+    value_title = ['First Price Auction','Standard Error','R$^2$','Observations']
+    column_list = ['Control(1)','Control(2)']
+    Panel =['A. Winning discount','B. Days to award the contract']
+    col = 0
+    
+    for parm in parameter:    
+        table_string = econ.outreg(parm, ['fpsb_auction'], ['First Price Auction'], digits = 2)
+        table_string += econ.table_statrow("R$^2$", [x.r2 for x in parm], digits =3)
+        table_string += econ.table_statrow("Number of Observation", [x.N for x in parm])
+        table_list = table_string.split('&')
+        table_list = [i.split('\\\\ \n',1)[0] for i in table_list]
+        table_list.remove(table_list[0])
+
+        for i in range(len(table_list)):
+            df_table.loc[i, column_list[col]] = table_list[i]
+            if i<2:
+                df_table.loc[i,'value_title'] = value_title[0]
+            elif i>=2 and i<4:
+                df_table.loc[i,'value_title'] = value_title[1]
+            elif i>=4 and i<6:
+                df_table.loc[i,'value_title'] = value_title[2]
+            else:
+                df_table.loc[i,'value_title'] = value_title[3]
+        
+        for i in range(0,2):
+            if i ==0:
+                df_table.loc[i,'Panel'] =Panel[i]
+                df_table.loc[i+2,'Panel'] =Panel[i]
+                df_table.loc[i+4,'Panel'] =Panel[i]
+                df_table.loc[i+6,'Panel'] =Panel[i]
+            else:
+                df_table.loc[i,'Panel'] =Panel[i]
+                df_table.loc[i+2,'Panel'] =Panel[i]
+                df_table.loc[i+4,'Panel'] =Panel[i]
+                df_table.loc[i+6,'Panel'] =Panel[i]
+                
+        col = col+1
+
+    df_table = df_table.sort_values(by='Panel',ascending = True).set_index(['Panel','value_title'])
+
     return(df_table)

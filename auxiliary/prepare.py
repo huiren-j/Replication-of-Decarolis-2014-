@@ -18,23 +18,16 @@ from auxiliary.table_formula import *
 def prepare_data(data):
     idx = data[(data['authority_code']==3091058)].index
     df_desc = data.drop(idx)
-    #data.shape obs = 16127 = original data length
+    
     idx2 = df_desc[(df_desc['authority_code']!=3090272) & (df_desc['authority_code']!=3070001) & (df_desc['post_ref_adpt'] == 1)].index
-    #print(idx2) 1130 obs to be deleted
     df_desc =df_desc.drop(idx2)
-    #print(data.shape)
-    #(14997,31) checked
+
 
     idx = df_desc[(df_desc['reserve_price']>5000000)|(df_desc['reserve_price']<300000)].index
-    #print(idx) 6892 obs to be deleted; checked
     df_desc = df_desc.drop(idx)
-    #print(df_desc.shape)
-    #(8105, 31) checked
 
-    #5101 obs to be deleted
     df_desc = df_desc[(df_desc['ctrl_pop_turin_co_sample']==1) | (df_desc['ctrl_pop_turin_pr_sample']==1) | (df_desc['ctrl_exp_turin_co_sample']==1) | (df_desc['ctrl_exp_turin_pr_sample']==1)]
-    #print(df_desc.shape)
-    #(3004,31) checked
+
     
     return(df_desc)
 
