@@ -42,8 +42,8 @@ The replication is uploaded at my repository on [Github](https://github.com/Huma
 
 > **Decarolis, Francesco(2014)**, "Awarding Price, Contract Performance, and Bids Screening: Evidence from Procurement Auctions." American Economic Journal: Applied Economics, 6 (1): 108-32.[here](https://www.aeaweb.org/articles?id=10.1257/app.6.1.108)  
     
-> **Conley, Timothy G., and Francesco Decarolis (2016),** "Detecting Bidders Groups in Collusive Auctions." American Economic Journal: Microeconomics, 8 (2): 1-38.[here](https://www.aeaweb.org/articles?id=10.1257/mic.20130254)  
+> **Conley, Timothy G., and Francesco Decarolis (2016)**, "Detecting Bidders Groups in Collusive Auctions." American Economic Journal: Microeconomics, 8 (2): 1-38.[here](https://www.aeaweb.org/articles?id=10.1257/mic.20130254)  
     
-> **Eisenhauer, P.(2020). template course project (2020)[here](https://github.com/HumanCapitalAnalysis/template-course-project)  
+> **Eisenhauer, P.(2020)**, template course project (2020)[here](https://github.com/HumanCapitalAnalysis/template-course-project)  
     
-> **Gehlen, A. (2019). Replication of Jason M. Lindo, Nicholas J. Sanders &amp; Philip Oreopoulos (2010).[here](https://github.com/amageh/replication-performance-standards/blob/master/replication-notebook.ipynb)
+> **Gehlen, A. (2019)**, Replication of Jason M. Lindo, Nicholas J. Sanders &amp; Philip Oreopoulos (2010).[here](https://github.com/amageh/replication-performance-standards/blob/master/replication-notebook.ipynb)
