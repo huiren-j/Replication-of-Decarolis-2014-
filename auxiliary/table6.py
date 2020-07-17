@@ -274,7 +274,6 @@ def table6_col5(data):
         #check multicollinearity
         X = df_reg_co.loc[:,exog]
         vif = calc_vif(X)
-        #print(vif)
 
 
         #delete from col list

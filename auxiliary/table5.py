@@ -129,7 +129,6 @@ def table5_PanelA_odd(data):
         #2. reg
         fe_reg_2 = mt.reg(df1, o, exog, cluster = 'authority_code',addcons= True, check_colinear = True)
 
-        #round뒤에 붙여서 값만 나오게 해보자
         ci_1 = fe_reg_1.summary.loc['fpsb_auction',['CI_low', 'CI_high']].round()
         ci_2 = fe_reg_2.summary.loc['fpsb_auction',['CI_low', 'CI_high']].round()
 
@@ -498,7 +497,7 @@ def table5_PanelA_odd_row3(data):
         #2. reg
         fe_reg_2 = mt.reg(df1, o, exog, cluster = 'authority_code',addcons= True, check_colinear = True)
 
-        #round뒤에 붙여서 값만 나오게 해보자
+
         ci_1 = fe_reg_1.summary.loc['fpsb_auction',['CI_low', 'CI_high']].round()
         ci_2 = fe_reg_2.summary.loc['fpsb_auction',['CI_low', 'CI_high']].round()
 

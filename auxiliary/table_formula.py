@@ -28,7 +28,6 @@ def table1_presort(data):
     index = [1.0, 2.0, 3.0]
     
     for i in range(len(columns)):
-        #row
         for j in range(len(index)):
             #column
             df_table.loc[table_values[i], (region[j],'Mean')] =data.loc[index[j], (columns[i], 'mean')]
@@ -47,7 +46,6 @@ def table1_postsort(data):
     index = [1.0, 2.0, 3.0]
     
     for i in range(len(columns)):
-        #row
         for j in range(len(index)):
             #column
             df_table.loc[table_values[i], (region[j],'Mean')] =data.loc[index[j], (columns[i], 'mean')]
@@ -269,7 +267,6 @@ def table7(dataA, dataB):
     df_table.loc['PanelA: Voluntary swtiching to FPAs', :] = '-'
     
     for i in range(len(columns)):
-        #row
         for j in index:
             #column
             df_table.loc[table_values[i], (auction_type[int(j)],'Mean')] =df.loc[j, (columns[i], 'mean')]
@@ -292,7 +289,6 @@ def table7(dataA, dataB):
     df_table.loc['PanelB: Forced to switch to FPAs', :] = '-'
     
     for i in range(len(columns)):
-        #row
         for j in index:
             #column
             df_table.loc[table_values[i], (auction_type[int(j)],'Mean')] =df.loc[j, (columns[i], 'mean')]

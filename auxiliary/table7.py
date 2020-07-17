@@ -38,8 +38,6 @@ def table7_PanelA(data):
     df['reserve_price'] = df['reserve_price']/1000
     df['population'] = df['population']/1000
     df= df[['fpsb_auction', 'forcedfp_strict', 'reserve_price', 'contract_duration', 'experience', 'population', 'discount', 'n_bidders', 'miles_pa_torino', 'miles_firm_work', 'days_to_award']]
-    #idx = df[df['forcedfp_strict']!=1].index
-    #df = df.drop(idx)
     
     describe = df.groupby('fpsb_auction')[['reserve_price', 'days_to_award', 'contract_duration', 'miles_pa_torino', 'experience', 'population', 'discount', 'n_bidders']].describe().round(2)
     return(describe)
@@ -64,8 +62,7 @@ def table7_PanelB(data):
     df['reserve_price'] = df['reserve_price']/1000
     df['population'] = df['population']/1000
     df= df[['fpsb_auction', 'forcedfp_strict', 'reserve_price', 'contract_duration', 'experience', 'population', 'discount', 'n_bidders', 'miles_pa_torino', 'miles_firm_work', 'days_to_award']]
-    #idx = df[df['forcedfp_strict']!=1].index
-    #df = df.drop(idx)
+
     
     describe = df.groupby('fpsb_auction')[['reserve_price', 'days_to_award', 'contract_duration', 'miles_pa_torino', 'experience', 'population', 'discount', 'n_bidders']].describe().round(2)
     return(describe)

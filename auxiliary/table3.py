@@ -17,6 +17,7 @@ from auxiliary.table6 import *
 from auxiliary.table7 import *
 from auxiliary.extension import *
 from auxiliary.table_formula import *
+
 def calc_vif(X):
 
     # Calculating VIF
@@ -52,7 +53,6 @@ def table3_col1(data):
         #check multicollinearity
         X = df_name.loc[:,exog]
         vif = calc_vif(X)
-        #print(vif)
 
 
         #delete from col list
@@ -209,8 +209,6 @@ def table3_col4(data):
         #check multicollinearity
         X = df_name.loc[:,exog]
         vif = calc_vif(X)
-        #print(vif)
-
 
         #delete from col list
         for i in range(len(vif)):
@@ -266,7 +264,6 @@ def table3_col5(data):
         #check multicollinearity
         X = df_name.loc[:,exog]
         vif = calc_vif(X)
-        #print(vif)
 
 
         #delete from col list
@@ -319,7 +316,6 @@ def table3_col6(data):
         #check multicollinearity
         X = df_name.loc[:,exog]
         vif = calc_vif(X)
-        #print(vif)
 
 
         #delete from col list
