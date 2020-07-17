@@ -25,7 +25,54 @@ def calc_vif(X):
 
     return(vif)
 
-'''extension with IE.dta'''
+'''extension with descriptive statistics of IE'''
+
+def plot_discount_IE(data, table):
+    data2 = data
+    tab7 = table
+    plt.figure()
+    plt.hist(data2.loc[(data2['adopters_vlunt']==1), 'discount'], bins = 30, color='orange', alpha=0.7 )
+    plt.axvline(x= tab7.iloc[0,tab7.columns.get_loc(('AB Auctions','Mean'))], color='r')
+    plt.axvline(x= tab7.iloc[0,tab7.columns.get_loc(('FB Auctions','Mean'))], color='b')
+    plt.xlabel('Winning discount for voluntary switcher group')
+    plt.ylabel('Freq.')
+    plt.title('Distribution of winning discount of voluntary switcher group')
+
+    plt.figure()
+    plt.hist(data2.loc[(data2['forcedfp_strict']==1), 'discount'], bins = 30, color='green', alpha=0.7 )
+    plt.axvline(x= tab7.iloc[8,tab7.columns.get_loc(('AB Auctions','Mean'))], color='r')
+    plt.axvline(x= tab7.iloc[8,tab7.columns.get_loc(('FB Auctions','Mean'))], color='b')
+    plt.xlabel('Winning discount for forced switcher group')
+    plt.ylabel('Freq.')
+    plt.title('Distribution of winning discount of forced switcher group')
+
+    return(plt.show)
+
+def plot_screening_IE(data, table):
+    data2 = data
+    tab7 = table
+    plt.figure()
+    plt.xlim(-5, 175)
+    plt.hist(data2.loc[(data2['adopters_vlunt']==1), 'days_to_award'], bins = 30, color='orange', alpha=0.7 )
+    plt.axvline(x= tab7.iloc[0,tab7.columns.get_loc(('AB Auctions','Mean'))], color='r')
+    plt.axvline(x= tab7.iloc[0,tab7.columns.get_loc(('FB Auctions','Mean'))], color='b')
+    plt.xlabel('Screening cost for voluntary switcher group')
+    plt.ylabel('Freq.')
+    plt.title('Distribution of days to award contract of voluntary switcher group')
+
+    plt.figure()
+    plt.xlim(-5, 175)
+    plt.ylim(0, 70)
+    plt.hist(data2.loc[(data2['forcedfp_strict']==1), 'days_to_award'], bins = 30, color='green', alpha=0.7 )
+    plt.axvline(x= tab7.iloc[8,tab7.columns.get_loc(('AB Auctions','Mean'))], color='r')
+    plt.axvline(x= tab7.iloc[8,tab7.columns.get_loc(('FB Auctions','Mean'))], color='b')
+    plt.xlabel('Screening cost for forced switcher group')
+    plt.ylabel('Freq.')
+    plt.title('Distribution of days to award contract of forced switcher group')
+    
+    return(plt.show)
+
+'''Regression with IE'''
 
 def extension_setting_IE(Authority, IE):
     df_IE = IE
@@ -126,7 +173,86 @@ def vlunt_col2(data):
     fe_reg = (fe_reg_discount, fe_reg_award )
     return(fe_reg)
 
+def table_ext(parameter):    
+    df_table = pd.DataFrame({'Panel':[],'value_title':[],'Control(1)':[],'Control(2)':[]})
+    value_title = ['First Price Auction','Standard Error','R$^2$','Observations']
+    column_list = ['Control(1)','Control(2)']
+    Panel =['A. Winning discount','B. Days to award the contract']
+    col = 0
+    
+    for parm in parameter:    
+        table_string = econ.outreg(parm, ['fpsb_auction'], ['First Price Auction'], digits = 2)
+        table_string += econ.table_statrow("R$^2$", [x.r2 for x in parm], digits =3)
+        table_string += econ.table_statrow("Number of Observation", [x.N for x in parm])
+        table_list = table_string.split('&')
+        table_list = [i.split('\\\\ \n',1)[0] for i in table_list]
+        table_list.remove(table_list[0])
 
+        for i in range(len(table_list)):
+            df_table.loc[i, column_list[col]] = table_list[i]
+            if i<2:
+                df_table.loc[i,'value_title'] = value_title[0]
+            elif i>=2 and i<4:
+                df_table.loc[i,'value_title'] = value_title[1]
+            elif i>=4 and i<6:
+                df_table.loc[i,'value_title'] = value_title[2]
+            else:
+                df_table.loc[i,'value_title'] = value_title[3]
+        
+        for i in range(0,2):
+            if i ==0:
+                df_table.loc[i,'Panel'] =Panel[i]
+                df_table.loc[i+2,'Panel'] =Panel[i]
+                df_table.loc[i+4,'Panel'] =Panel[i]
+                df_table.loc[i+6,'Panel'] =Panel[i]
+            else:
+                df_table.loc[i,'Panel'] =Panel[i]
+                df_table.loc[i+2,'Panel'] =Panel[i]
+                df_table.loc[i+4,'Panel'] =Panel[i]
+                df_table.loc[i+6,'Panel'] =Panel[i]
+                
+        col = col+1
+
+    df_table = df_table.sort_values(by='Panel',ascending = True).set_index(['Panel','value_title'])
+
+    return(df_table)
+
+
+def plot_comparions_to_baseline(table):
+
+    tab8 = table.reset_index()
+
+    dis_1= float(tab8.iloc[0,2][:5])
+    dis_2= float(tab8.iloc[0,3][:5])
+    day_1= float(tab8.iloc[4,2][:6])
+    day_2= float(tab8.iloc[4,3][:6])
+
+    dis_tab8 = [dis_1, dis_2]
+    dis_tab2 = [13.10, 11.99]
+    dis_tab3 = [8.65, 8.69]
+    day_tab8 = [day_1, day_2]
+    day_tab2 = [28.70, 26.23]
+    day_tab3 = [35.02, 37.49]
+
+    #plot
+    plt.figure()
+    plt.ylim(5,15)
+    plt.plot(dis_tab8,'o',color = 'r')
+    plt.plot(dis_tab2,'o',color = 'b')
+    plt.plot(dis_tab3,'o',color = 'orange')
+    plt.xlabel('Firs Price Auction')
+    plt.ylabel('The Effect on Winning Discount')
+    plt.title('Comparison to the estimated in Table2 and Table3: Winning Discount')
+
+    plt.figure()
+    plt.ylim(20,40)
+    plt.plot(day_tab8,'o',color = 'r')
+    plt.plot(day_tab2,'o',color = 'b')
+    plt.plot(day_tab3,'o',color = 'orange')
+    plt.xlabel('Firs Price Auction')
+    plt.ylabel('The Effect on Days to Award')
+    plt.title('Comparison to the estimated in Table2 and Table3: Days to Award')
+    return(plt.show())
 
 '''extension with Authority.dta'''
 

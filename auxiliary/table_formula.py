@@ -254,9 +254,9 @@ def table6(parameter):
 def table7(dataA, dataB):
     #panelA
     df = dataA
-    df_table = pd.DataFrame(index =['PanelA: Voluntary swtiching to FPAs', 'Winning discount', 'Days to award', 'Reserve price', 'Number of bidders', 'Conract Duration', 'Miles PA from Turin', 'Population', 'Experience'], columns= [['AB Auctions','AB Auctions','AB Auctions','AB Auctions','FB Auctions','FB Auctions','FB Auctions','FB Auctions'],['Mean','SD','p50','N','Mean','SD','p50','N']])
+    df_table = pd.DataFrame(index =['PanelA: Voluntary swtiching to FPAs', 'Winning discount', 'Days to award', 'Reserve price', 'Number of bidders', 'Conract Duration', 'Miles PA from Turin', 'Population', 'Experience'], columns= [['AB Auctions','AB Auctions','AB Auctions','AB Auctions','FP Auctions','FP Auctions','FP Auctions','FP Auctions'],['Mean','SD','p50','N','Mean','SD','p50','N']])
     table_values= ['Winning discount', 'Days to award', 'Reserve price', 'Number of bidders', 'Conract Duration', 'Miles PA from Turin', 'Population', 'Experience']
-    auction_type= ['AB Auctions','FB Auctions']
+    auction_type= ['AB Auctions','FP Auctions']
     
     columns = [ 'discount','days_to_award','reserve_price', 'n_bidders', 'contract_duration',  'miles_pa_torino', 'population', 'experience' ]
     values = ['mean','std','50%','count']
@@ -277,7 +277,7 @@ def table7(dataA, dataB):
     
     #panelB
     df = dataB
-    df_table = pd.DataFrame(index =['PanelB.Forced to switch to FPAs','Winning discount', 'Days to award', 'Reserve price', 'Number of bidders', 'Conract Duration', 'Miles PA from Turin', 'Population', 'Experience'], columns= [['AB Auctions','AB Auctions','AB Auctions','AB Auctions','FB Auctions','FB Auctions','FB Auctions','FB Auctions'],['Mean','SD','p50','N','Mean','SD','p50','N']])
+    df_table = pd.DataFrame(index =['PanelB: Forced to switch to FPAs','Winning discount', 'Days to award', 'Reserve price', 'Number of bidders', 'Conract Duration', 'Miles PA from Turin', 'Population', 'Experience'], columns= [['AB Auctions','AB Auctions','AB Auctions','AB Auctions','FB Auctions','FB Auctions','FB Auctions','FB Auctions'],['Mean','SD','p50','N','Mean','SD','p50','N']])
     table_values= ['Winning discount', 'Days to award', 'Reserve price', 'Number of bidders', 'Conract Duration', 'Miles PA from Turin', 'Population', 'Experience']
     auction_type= ['AB Auctions','FB Auctions']
     
@@ -285,7 +285,7 @@ def table7(dataA, dataB):
     values = ['mean','std','50%','count']
     index = [0.0, 1.0]
     
-    df_table.loc['PanelB.Forced to switch to FPAs', :] = '-'
+    df_table.loc['PanelB: Forced to switch to FPAs', :] = '-'
     
     for i in range(len(columns)):
         #row
@@ -298,48 +298,4 @@ def table7(dataA, dataB):
     
     df_tableB = df_table
     df_table= pd.concat([df_tableA, df_tableB])
-    return(df_table)
-
-def table_ext1(parameter):    
-    df_table = pd.DataFrame({'Panel':[],'value_title':[],'Control(1)':[],'Control(2)':[]})
-    value_title = ['First Price Auction','Standard Error','R$^2$','Observations']
-    column_list = ['Control(1)','Control(2)']
-    Panel =['A. Winning discount','B. Days to award the contract']
-    col = 0
-    
-    for parm in parameter:    
-        table_string = econ.outreg(parm, ['fpsb_auction'], ['First Price Auction'], digits = 2)
-        table_string += econ.table_statrow("R$^2$", [x.r2 for x in parm], digits =3)
-        table_string += econ.table_statrow("Number of Observation", [x.N for x in parm])
-        table_list = table_string.split('&')
-        table_list = [i.split('\\\\ \n',1)[0] for i in table_list]
-        table_list.remove(table_list[0])
-
-        for i in range(len(table_list)):
-            df_table.loc[i, column_list[col]] = table_list[i]
-            if i<2:
-                df_table.loc[i,'value_title'] = value_title[0]
-            elif i>=2 and i<4:
-                df_table.loc[i,'value_title'] = value_title[1]
-            elif i>=4 and i<6:
-                df_table.loc[i,'value_title'] = value_title[2]
-            else:
-                df_table.loc[i,'value_title'] = value_title[3]
-        
-        for i in range(0,2):
-            if i ==0:
-                df_table.loc[i,'Panel'] =Panel[i]
-                df_table.loc[i+2,'Panel'] =Panel[i]
-                df_table.loc[i+4,'Panel'] =Panel[i]
-                df_table.loc[i+6,'Panel'] =Panel[i]
-            else:
-                df_table.loc[i,'Panel'] =Panel[i]
-                df_table.loc[i+2,'Panel'] =Panel[i]
-                df_table.loc[i+4,'Panel'] =Panel[i]
-                df_table.loc[i+6,'Panel'] =Panel[i]
-                
-        col = col+1
-
-    df_table = df_table.sort_values(by='Panel',ascending = True).set_index(['Panel','value_title'])
-
     return(df_table)
