@@ -9,7 +9,9 @@ Decarolis analyzed the effect of the switch of Italian public procurement method
 
 ## Continous integration with Travis CI to ensure Reproducibility  <a class = "tocSkip">
 
-I completed to 
+I completed integration with Travis CI and it can be checked by     
+[![Build Status](https://travis-ci.org/HumanCapitalAnalysis/microeconometrics-course-project-HyeinJeong.svg?branch=temp1)](https://travis-ci.org/HumanCapitalAnalysis/microeconometrics-course-project-HyeinJeong)
+    
 <a href="https://nbviewer.jupyter.org/github/HumanCapitalAnalysis/microeconometrics-course-project-HyeinJeong/blob/temp1/project_HyeinJeong.ipynb"
    target="_parent">
    <img align="center"
@@ -25,4 +27,3 @@ I completed to
 </a>
 
     
-[![Build Status](https://travis-ci.org/HumanCapitalAnalysis/microeconometrics-course-project-HyeinJeong.svg?branch=temp1)](https://travis-ci.org/HumanCapitalAnalysis/microeconometrics-course-project-HyeinJeong)
