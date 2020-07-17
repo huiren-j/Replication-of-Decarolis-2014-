@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-import matplotlib as plt
+import matplotlib.pyplot as plt
 from linearmodels import PanelOLS
 import statsmodels.api as sm
 import econtools as econ
@@ -12,8 +12,10 @@ from auxiliary.prepare import *
 from auxiliary.table2 import *
 from auxiliary.table3 import *
 from auxiliary.table4 import *
+from auxiliary.table5 import *
 from auxiliary.table6 import *
 from auxiliary.table7 import *
+from auxiliary.extension import *
 from auxiliary.table_formula import *
 
 def table7_PanelA(data):

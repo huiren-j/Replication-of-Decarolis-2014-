@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-import matplotlib as plt
+import matplotlib.pyplot as plt
 from linearmodels import PanelOLS
 import statsmodels.api as sm
 import econtools as econ
@@ -12,7 +12,10 @@ from auxiliary.prepare import *
 from auxiliary.table2 import *
 from auxiliary.table3 import *
 from auxiliary.table4 import *
+from auxiliary.table5 import *
 from auxiliary.table6 import *
+from auxiliary.table7 import *
+from auxiliary.extension import *
 from auxiliary.table_formula import *
 
 def calc_vif(X):
@@ -220,7 +223,7 @@ def table5_PanelA_even(data):
         #2. reg
         fe_reg_2 = mt.reg(df1, o, exog, cluster = 'authority_code', check_colinear = True)
 
-        #round뒤에 붙여서 값만 나오게 해보자
+        
         ci_1 = fe_reg_1.summary.loc['fpsb_auction',['CI_low', 'CI_high']].round()
         ci_2 = fe_reg_2.summary.loc['fpsb_auction',['CI_low', 'CI_high']].round()
 
